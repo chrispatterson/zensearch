@@ -1,0 +1,56 @@
+AllCops:
+  TargetRubyVersion: 2.6.5
+  Exclude:
+    - bin/**/*
+    - db/schema.rb
+    - db/seeds.rb
+    - node_modules/**/*
+    - storage/**/*
+
+# We don't need to alphabetize gems
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - config/environments/**/*
+    - config/routes.rb
+    - db/migrate/**/*
+
+Metrics/ClassLength:
+  Exclude:
+    - db/migrate/**/*
+
+# Allow more room than the default value of 80.
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**/*
+    - test/**/*
+
+Metrics/ModuleLength:
+  Exclude:
+    - test/**/*
+
+# Avoid offenses for default Rails files like config/application.rb
+Style/Documentation:
+  Enabled: false
+
+# Match the style that Rails generators use
+Style/EmptyMethod:
+  EnforcedStyle: expanded
