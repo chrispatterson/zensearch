@@ -10,6 +10,11 @@ class Organization < ApplicationRecord
   # Disable single-table inheritance
   self.inheritance_column = :ignore_the_type_column
 
+  SEARCHABLE_BOOLEAN_FIELDS = [:shared_tickets].freeze
+  SEARCHABLE_TEXT_FIELDS = %i[url external_id name details].freeze
+
+  SEARCHABLE_FIELDS = (SEARCHABLE_BOOLEAN_FIELDS + SEARCHABLE_TEXT_FIELDS).freeze
+
   def domain_names=(_placeholder)
   end
 end

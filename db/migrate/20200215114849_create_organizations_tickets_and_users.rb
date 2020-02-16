@@ -5,7 +5,6 @@ class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
     create_table :organizations do |t|
       t.string :url
       t.string :external_id, limit: 36, null: false
-      t.integer :type, limit: 2, null: false, default: 1
       t.string :name
       t.string :details
       t.boolean :shared_tickets, null: false, default: false

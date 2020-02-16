@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 2020_02_15_114849) do
   create_table "organizations", force: :cascade do |t|
     t.string "url"
     t.string "external_id", limit: 36, null: false
-    t.integer "type", limit: 2, default: 1, null: false
     t.string "name"
     t.string "details"
     t.boolean "shared_tickets", default: false, null: false

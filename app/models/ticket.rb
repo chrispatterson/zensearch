@@ -4,6 +4,8 @@ class Ticket < ApplicationRecord
   include UuidConcern
   uuid_attributes %i[id external_id]
 
+  self.primary_key = :id
+
   belongs_to :organization, optional: true
   belongs_to :submitter, class_name: 'User'
   belongs_to :assignee, class_name: 'User', optional: true
@@ -21,7 +23,7 @@ class Ticket < ApplicationRecord
     hold: 3,
     closed: 4,
     solved: 5
-  }
+  }, _prefix: true
 
   enum type: {
     incident: 1,
