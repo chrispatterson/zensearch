@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2020_02_15_114849) do
     t.string "url"
     t.string "external_id", limit: 36, null: false
     t.string "name"
-    t.string "alias"
+    t.string "user_alias"
     t.boolean "active", default: true, null: false
     t.boolean "verified", default: false, null: false
     t.boolean "shared", default: true, null: false

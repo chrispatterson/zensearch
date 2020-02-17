@@ -9,12 +9,8 @@ module UuidConcern
       require 'active_support/core_ext/securerandom'
 
       attributes.each do |attribute|
-        define_method("regenerate_#{attribute}") do
-          update! attribute => self.class.generate_uuid
-        end
-
         before_create do
-          send("#{attribute}=", self.class.generate_uuid) unless send("#{attribute}?")
+          public_send("#{attribute}=", self.class.generate_uuid) unless public_send("#{attribute}?")
         end
       end
     end

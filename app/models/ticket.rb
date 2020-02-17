@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
+  include SearchableConcern
+  boolean_attributes [:has_incidents]
+  date_attributes [:due_at]
+  enum_attributes %i[priority status type via]
+  fulltext_attributes %i[id url external_id subject description]
+  other_attributes %i[submitter_id assignee_id organization_id]
+
   include UuidConcern
   uuid_attributes %i[id external_id]
 

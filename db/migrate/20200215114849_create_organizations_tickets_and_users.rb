@@ -37,7 +37,7 @@ class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
       t.string :url
       t.string :external_id, limit: 36, null: false
       t.string :name
-      t.string :alias
+      t.string :user_alias
       t.boolean :active, null: false, default: true
       t.boolean :verified, null: false, default: false
       t.boolean :shared, null: false, default: true

@@ -17,7 +17,7 @@ module ActiveSupport
     def create_organization!(options = {})
       Organization.create!(
         {
-          url: 'https://tyrell.com',
+          url: "https://#{SecureRandom.uuid}-tyrell.com",
           external_id: SecureRandom.uuid,
           name: 'Test Organization',
           details: 'Some details',
@@ -29,7 +29,7 @@ module ActiveSupport
     def create_ticket!(options = {})
       Ticket.create!(
         {
-          url: nil,
+          url: "https://#{SecureRandom.uuid}-weyland.com",
           type: Ticket.types[:incident],
           subject: 'Test Ticket',
           description: 'Some cool description',
@@ -48,18 +48,18 @@ module ActiveSupport
     def create_user!(options = {})
       User.create!(
         {
-          url: nil,
+          url: "https://#{SecureRandom.uuid}-primatech.com",
           name: 'Test User',
-          user_alias: nil,
+          user_alias: 'Spartacus',
           active: true,
           verified: false,
           shared: true,
           locale: 'en-US',
           timezone: 'Denmark',
-          last_login_at: nil,
+          last_login_at: DateTime.now.utc - 7.days,
           email: "#{SecureRandom.uuid}@yoyodyne.com",
-          phone: nil,
-          signature: nil,
+          phone: '273-8255',
+          signature: "The ships hung in the sky, much the way that bricks don't.",
           organization: default_organization,
           suspended: false,
           role: User.roles['end-user']
