@@ -22,9 +22,9 @@ class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
       t.text :description
       t.integer :priority, limit: 2, null: false, default: 3
       t.integer :status, limit: 2, null: false, default: 1
-      t.references :submitter, foreign_key: { to_table: :users }, null: false
-      t.references :assignee, foreign_key: { to_table: :users }
-      t.references :organization, foreign_key: true
+      t.references :submitter, foreign_key: false, null: false
+      t.references :assignee, foreign_key: false
+      t.references :organization, foreign_key: false
       t.boolean :has_incidents, null: false, default: false
       t.datetime :due_at
       t.integer :via, limit: 2, null: false, default: 1

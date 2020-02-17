@@ -2,6 +2,14 @@
 
 IMPORT_ENTITIES = [Organization, User, Ticket].freeze
 
+def names_to_models(entity, array)
+  models = []
+  array.map do |name|
+    models << entity.where(name: name.strip).first_or_create!
+  end
+   models
+end
+
 IMPORT_ENTITIES.each do |entity|
 
   if entity.count == 0
@@ -10,8 +18,14 @@ IMPORT_ENTITIES.each do |entity|
     records = JSON.parse(File.read(path))
 
     records.each do |record|
-      record[:all_tags] = record.delete('tags')
-      entity.create!(record)
+      tags = record.delete('tags')
+      domain_names = record.delete('domain_names')
+
+      record[:tags] = names_to_models(Tag, tags) if tags.present?
+      record[:domain_names] = names_to_models(DomainName, domain_names) if domain_names.present?
+
+      model = entity.new(record)
+      model.save!(validate: false)
       print '.'
     end
 

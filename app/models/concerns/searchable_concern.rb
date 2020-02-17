@@ -62,14 +62,6 @@ module SearchableConcern
       end
     end
 
-    def self.other_attributes(attributes = [])
-      singleton_class.instance_eval do
-        define_method(:other_search_fields) do
-          attributes
-        end
-      end
-    end
-
     # Add default accessors
     SEARCHABLE_FIELD_GROUPS.each do |field_group|
       next if respond_to? field_group
