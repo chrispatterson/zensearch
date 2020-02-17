@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_17_014028) do
+ActiveRecord::Schema.define(version: 2020_02_17_224235) do
+
+  create_table "domain_names", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "domain_registrations", force: :cascade do |t|
+    t.integer "domain_name_id"
+    t.integer "organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_name_id"], name: "index_domain_registrations_on_domain_name_id"
+    t.index ["organization_id"], name: "index_domain_registrations_on_organization_id"
+  end
 
   create_table "organizations", force: :cascade do |t|
     t.string "url"
@@ -83,9 +98,8 @@ ActiveRecord::Schema.define(version: 2020_02_17_014028) do
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
+  add_foreign_key "domain_registrations", "domain_names"
+  add_foreign_key "domain_registrations", "organizations"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "tickets", "organizations"
-  add_foreign_key "tickets", "users", column: "assignee_id"
-  add_foreign_key "tickets", "users", column: "submitter_id"
   add_foreign_key "users", "organizations"
 end

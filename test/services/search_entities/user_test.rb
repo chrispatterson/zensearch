@@ -66,6 +66,16 @@ class UserTest < ActiveSupport::TestCase
     )
   end
 
+  test 'does_not_find_empty_text_when_unset' do
+    blank_user = create_user!(signature: '')
+    nil_user = create_user!(signature: nil)
+    search_params = {}
+    search = SearchEntities.call(User, search_params)
+
+    refute_includes search.results, blank_user, 'Should not find users by empty text when text is not a parameter'
+    refute_includes search.results, nil_user, 'Should not find users by nil text when text is not a parameter'
+  end
+
   test 'finds_by_boolean_fields' do
     search_params = { active: 'false' }
     search = SearchEntities.call(User, search_params)
@@ -79,6 +89,20 @@ class UserTest < ActiveSupport::TestCase
     )
   end
 
+  test 'finds_by_other_fields' do
+    danish_user = create_user!(locale: 'da-DK')
+    search_params = { locale: 'da-DK' }
+    search = SearchEntities.call(User, search_params)
+
+    assert_includes search.results, danish_user, 'Should find users by other value'
+
+    assert(
+      [@url_user, @external_id_user, @name_user, @signature_user].all? do |org|
+        search.results.exclude? org
+      end, 'Should not find users without matching other values'
+    )
+  end
+
   test 'finds_by_combined_fields' do
     search_params = { text: 'sit', active: 'false' }
     search = SearchEntities.call(User, search_params)
@@ -86,5 +110,4 @@ class UserTest < ActiveSupport::TestCase
     assert_includes search.results, @name_user, 'Should find users by text in shared context'
     assert_includes search.results, @inactive_user, 'Should find users by boolean in shared context'
   end
-
 end

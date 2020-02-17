@@ -96,4 +96,14 @@ class OrganizationTest < ActiveSupport::TestCase
 
     assert_includes search.results, tag_org, 'Should find organizations by tag'
   end
+
+  test 'finds_by_domains' do
+    domain_name = 'brawndo.com'
+    domain_org = create_organization!
+    domain_org.domain_names << DomainName.where(name: domain_name).first_or_create!
+    search_params = { domain_names: domain_name }
+    search = SearchEntities.call(Organization, search_params)
+
+    assert_includes search.results, domain_org, 'Should find organizations by tag'
+  end
 end
