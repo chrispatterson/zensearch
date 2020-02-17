@@ -86,4 +86,5 @@ class UserTest < ActiveSupport::TestCase
     assert_includes search.results, @name_user, 'Should find users by text in shared context'
     assert_includes search.results, @inactive_user, 'Should find users by boolean in shared context'
   end
+
 end

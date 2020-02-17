@@ -13,6 +13,9 @@ class User < ApplicationRecord
 
   belongs_to :organization, optional: true
 
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings
+
   enum role: {
     'end-user': 1,
     agent: 2,

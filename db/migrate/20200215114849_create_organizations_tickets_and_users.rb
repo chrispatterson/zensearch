@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
-  def change
+  def up
     create_table :organizations do |t|
       t.string :url
       t.string :external_id, limit: 36, null: false
@@ -52,5 +52,11 @@ class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
       t.integer :role, limit: 2, null: false, default: 1
       t.timestamps null: false
     end
+  end
+
+  def down
+    drop_table :tickets
+    drop_table :users
+    drop_table :organizations
   end
 end

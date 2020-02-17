@@ -10,10 +10,11 @@ IMPORT_ENTITIES.each do |entity|
     records = JSON.parse(File.read(path))
 
     records.each do |record|
+      record[:all_tags] = record.delete('tags')
       entity.create!(record)
       print '.'
     end
-    
+
     puts "\n🌱 #{entity} list imported\n"
   end
 

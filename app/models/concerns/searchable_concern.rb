@@ -8,6 +8,7 @@ module SearchableConcern
     date_search_fields
     enum_search_fields
     fulltext_search_fields
+    join_search_fields
     other_search_fields
   ].freeze
 
@@ -40,6 +41,14 @@ module SearchableConcern
     def self.fulltext_attributes(attributes = [])
       singleton_class.instance_eval do
         define_method(:fulltext_search_fields) do
+          attributes
+        end
+      end
+    end
+
+    def self.join_attributes(attributes = [])
+      singleton_class.instance_eval do
+        define_method(:join_search_fields) do
           attributes
         end
       end
@@ -81,6 +90,7 @@ module SearchableConcern
         date_search_fields +
         enum_search_fields +
         fulltext_search_fields +
+        join_search_fields +
         other_search_fields
     end
   end

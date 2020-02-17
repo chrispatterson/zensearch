@@ -86,4 +86,14 @@ class OrganizationTest < ActiveSupport::TestCase
     assert_includes search.results, @name_org, 'Should find organizations by text in shared context'
     assert_includes search.results, @shared_tickets_org, 'Should find organizations by boolean in shared context'
   end
+
+  test 'finds_by_tags' do
+    tag_name = 'Amaryllis'
+    tag_org = create_organization!
+    tag_org.tags << Tag.where(name: tag_name).first_or_create!
+    search_params = { tags: tag_name }
+    search = SearchEntities.call(Organization, search_params)
+
+    assert_includes search.results, tag_org, 'Should find organizations by tag'
+  end
 end

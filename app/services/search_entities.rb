@@ -31,6 +31,7 @@ class SearchEntities
       boolean_scope,
       date_scope,
       enum_scope,
+      join_scope,
       other_scope,
       text_scope
     ].reduce(:or))
@@ -75,6 +76,21 @@ class SearchEntities
 
   def enum_value(field)
     entity.public_send(field.to_s.pluralize)[search_data[field]]
+  end
+
+  def join_scope
+    fields = search_data.keys & entity.join_search_fields
+    return entity.none unless fields.present?
+
+    conditions = fields.map do |field|
+      entity.where(
+        id: entity.joins(field)
+          .where(field => { name: search_data[field] })
+          .pluck(:id)
+      )
+    end
+
+    conditions.reduce(:or)
   end
 
   def other_scope
