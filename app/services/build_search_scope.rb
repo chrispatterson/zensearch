@@ -32,37 +32,30 @@ class BuildSearchScope
         enum: keys & entity.enum_search_fields,
         join: keys & entity.join_search_fields,
         other: keys & entity.other_search_fields,
-        text: (entity.fulltext_search_fields if keys.include? :text)
+        text: keys & entity.fulltext_search_fields
       }
     end
 
     def scopes_to_search
       [
-        boolean_scope,
-        date_scope,
-        enum_scope,
-        join_scope,
-        other_scope,
-        text_scope
+        boolean_scope, date_scope, enum_scope, join_scope, other_scope, text_scope
       ].compact.reduce(:or)
     end
 
     def boolean_scope
       return unless search_fields[:boolean]
 
-      conditions = search_fields[:boolean].map do |field|
+      search_fields[:boolean].map do |field|
         entity.where(field => search_data[field])
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
     def date_scope
       return unless search_fields[:date]
 
-      conditions = search_fields[:date].map do |field|
+      search_fields[:date].map do |field|
         entity.where(field => date_range(field))
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
     def date_range(field)
@@ -72,10 +65,9 @@ class BuildSearchScope
     def enum_scope
       return unless search_fields[:enum]
 
-      conditions = search_fields[:enum].map do |field|
+      search_fields[:enum].map do |field|
         entity.where(field => enum_value(field))
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
     def enum_value(field)
@@ -85,42 +77,46 @@ class BuildSearchScope
     def join_scope
       return unless search_fields[:join]
 
-      conditions = search_fields[:join].map do |field|
+      search_fields[:join].map do |field|
         entity.where(
           id: entity.joins(field)
             .where(field => { name: search_data[field] })
             .pluck(:id)
         )
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
     def other_scope
-      conditions = search_fields[:other].map do |field|
+      search_fields[:other].map do |field|
         entity.where(field => search_data[field])
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
     def text_scope
       return unless search_fields[:text]
 
-      search_data[:text].present? ? with_text_scope : blank_text_scope
+      text_fields = search_data.slice(*search_fields[:text])
+
+      blank_text_fields = text_fields.select { |_key, value| value.blank? }
+      present_text_fields = text_fields.select { |_key, value| value.present? }
+
+      [
+        blank_text_scope(blank_text_fields),
+        with_text_scope(present_text_fields)
+      ].compact.reduce(:or)
     end
 
-    def blank_text_scope
-      conditions = entity.fulltext_search_fields.map do |field|
+    def blank_text_scope(fields)
+      fields.map do |field, _value|
         entity.where(field => nil).or(entity.where(field => ''))
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 
-    def with_text_scope
-      conditions = entity.fulltext_search_fields.map do |field|
+    def with_text_scope(fields)
+      fields.map do |field, value|
         entity.where(
-          entity.arel_table[field].matches("%#{search_data[:text]}%")
+          entity.arel_table[field].matches("%#{value}%")
         )
-      end
-      conditions.reduce(:or)
+      end.reduce(:or)
     end
 end

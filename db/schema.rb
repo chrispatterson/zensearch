@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(version: 2020_02_17_224235) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tickets", id: false, force: :cascade do |t|
-    t.string "id", limit: 36, null: false
+  create_table "tickets", force: :cascade do |t|
+    t.string "_id", limit: 36, null: false
     t.string "url"
     t.string "external_id", limit: 36, null: false
     t.integer "type", limit: 2, default: 1, null: false

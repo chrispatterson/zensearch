@@ -71,6 +71,10 @@ module ActiveSupport
       @default_organization || Organization.first
     end
 
+    def default_ticket
+      @default_ticket || Ticket.first
+    end
+
     def default_user
       @default_user || User.first
     end

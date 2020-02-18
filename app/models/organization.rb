@@ -3,7 +3,8 @@
 class Organization < ApplicationRecord
   include SearchableConcern
   boolean_attributes [:shared_tickets]
-  fulltext_attributes %i[url external_id name details]
+  date_attributes [:created_at]
+  fulltext_attributes %i[details external_id name url]
   join_attributes %i[domain_names tags]
 
   include UuidConcern
@@ -20,4 +21,6 @@ class Organization < ApplicationRecord
 
   # Disable single-table inheritance
   self.inheritance_column = :ignore_the_type_column
+
+  alias_attribute :_id, :id
 end

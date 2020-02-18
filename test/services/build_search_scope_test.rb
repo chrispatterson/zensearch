@@ -7,15 +7,17 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
 
   def do_setup
     @search_params = {
-      active: true,
-      last_login_at: Time.now.utc,
-      role: :admin,
-      locale: 'da-DK',
-      tags: ['it'],
-      domain_names: ['blue-sun.org'],
-      priority: :high,
-      text: 'cool'
+      active: true, last_login_at: Time.now.utc, role: :admin, locale: 'da-DK',
+      tags: ['it'], domain_names: ['blue-sun.org'], priority: :high,
+      id: 'beep', url: 'beep', external_id: 'beep', name: 'beep', details: 'beep', subject: 'beep',
+      description: 'beep', user_alias: 'beep', email: 'beep', phone: 'beep', signature: 'beep'
     }
+  end
+
+  test 'raises_for_invalid_usage' do
+    assert_raises ArgumentError do
+      SearchEntities.new(Organization, 'Greetings Professor Falken.')
+    end
   end
 
   test 'resolves_search_fields' do
@@ -30,8 +32,7 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
     ticket_scope = BuildSearchScope.call(Ticket, @search_params)
     expected_ticket_fields = {
       boolean: [], date: [],
-      enum: [:priority], join: [:tags],
-      other: [],
+      enum: [:priority], join: [:tags], other: [],
       text: %i[id url external_id subject description]
     }
     assert_equal expected_ticket_fields, ticket_scope.search_fields
@@ -107,27 +108,34 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
   end
 
   test 'builds_present_text_scope' do
-    text_search_params = { text: 'Multi National United' }
+    text_search_params = {}
+    Organization.fulltext_search_fields.each do |key|
+      text_search_params[key] = 'Multi National United'
+    end
+
     text_scope = BuildSearchScope.call(Organization, text_search_params)
 
     expected_sql =
-      'SELECT "organizations".* FROM "organizations" WHERE ((("organizations"."url" '\
+      'SELECT "organizations".* FROM "organizations" WHERE ((("organizations"."details" '\
       'LIKE \'%Multi National United%\' OR "organizations"."external_id" LIKE \'%Multi National United%\') OR '\
       '"organizations"."name" LIKE \'%Multi National United%\') OR '\
-      '"organizations"."details" LIKE \'%Multi National United%\')'
+      '"organizations"."url" LIKE \'%Multi National United%\')'
 
     assert_equal expected_sql, text_scope.scope.to_sql
   end
 
   test 'builds_absent_text_scope' do
-    text_search_params = { text: '' }
+    text_search_params = {}
+    Organization.fulltext_search_fields.each do |key|
+      text_search_params[key] = ''
+    end
     text_scope = BuildSearchScope.call(Organization, text_search_params)
 
     expected_sql =
-      'SELECT "organizations".* FROM "organizations" WHERE (((("organizations"."url" IS NULL OR "organizations"."url" '\
-      '= \'\') OR ("organizations"."external_id" IS NULL OR "organizations"."external_id" = \'\')) OR '\
-      '("organizations"."name" IS NULL OR "organizations"."name" = \'\')) OR ("organizations"."details" IS NULL OR '\
-      '"organizations"."details" = \'\'))'
+      'SELECT "organizations".* FROM "organizations" WHERE (((("organizations"."details" IS NULL OR '\
+      '"organizations"."details" = \'\') OR ("organizations"."external_id" IS NULL OR '\
+      '"organizations"."external_id" = \'\')) OR ("organizations"."name" IS NULL OR "organizations"."name" = \'\')) OR '\
+      '("organizations"."url" IS NULL OR "organizations"."url" = \'\'))'
 
     assert_equal expected_sql, text_scope.scope.to_sql
   end
