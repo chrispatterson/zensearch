@@ -11,13 +11,7 @@ class SearchEntities
     raise ArgumentError, 'search_data must be a hash' unless search_data.is_a? Hash
 
     @entity = entity
-    @search_data = search_data.symbolize_keys
-
-    raise ArgumentError, 'unsupported search fields' if (
-      @search_data.keys -
-      [:text] -
-      entity.searchable_fields
-    ).present?
+    @search_data = search_data
   end
 
   def self.call(entity, search_data)
@@ -27,104 +21,6 @@ class SearchEntities
   end
 
   def go
-    @results = entity.merge([
-      boolean_scope,
-      date_scope,
-      enum_scope,
-      join_scope,
-      other_scope,
-      text_scope
-    ].reduce(:or))
-  end
-
-  def boolean_scope
-    fields = search_data.keys & entity.boolean_search_fields
-    return entity.none unless fields.present?
-
-    conditions = fields.map do |field|
-      entity.where(field => search_data[field])
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def date_scope
-    fields = search_data.keys & entity.date_search_fields
-    return entity.none unless fields.present?
-
-    conditions = fields.map do |field|
-      entity.where(field => date_range(field))
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def date_range(field)
-    search_data[field].beginning_of_day..search_data[field].end_of_day
-  end
-
-  def enum_scope
-    fields = search_data.keys & entity.enum_search_fields
-    return entity.none unless fields.present?
-
-    conditions = fields.map do |field|
-      entity.where(field => enum_value(field))
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def enum_value(field)
-    entity.public_send(field.to_s.pluralize)[search_data[field]]
-  end
-
-  def join_scope
-    fields = search_data.keys & entity.join_search_fields
-    return entity.none unless fields.present?
-
-    conditions = fields.map do |field|
-      entity.where(
-        id: entity.joins(field)
-          .where(field => { name: search_data[field] })
-          .pluck(:id)
-      )
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def other_scope
-    fields = search_data.keys & entity.other_search_fields
-    return entity.none unless fields.present?
-
-    conditions = fields.map do |field|
-      entity.where(field => search_data[field])
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def text_scope
-    return entity.none unless search_data.key? :text
-
-    search_data[:text].present? ? with_text_scope : blank_text_scope
-  end
-
-  def blank_text_scope
-    conditions = entity.fulltext_search_fields.map do |field|
-      entity.where(field => nil).or(entity.where(field => ''))
-    end
-
-    conditions.reduce(:or)
-  end
-
-  def with_text_scope
-    conditions = entity.fulltext_search_fields.map do |field|
-      entity.where(
-        entity.arel_table[field].matches("%#{search_data[:text]}%")
-      )
-    end
-
-    conditions.reduce(:or)
+    @results = entity.all.merge(BuildSearchScope.call(entity, search_data).scope)
   end
 end

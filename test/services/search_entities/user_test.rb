@@ -21,9 +21,6 @@ class UserTest < ActiveSupport::TestCase
     assert_raises ArgumentError do
       SearchEntities.new(User, 'Greetings Professor Falken.')
     end
-    assert_raises ArgumentError do
-      SearchEntities.new(User, nonexistent: 'oops')
-    end
   end
 
   test 'finds_by_text' do
