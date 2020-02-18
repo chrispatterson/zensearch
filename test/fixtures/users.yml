@@ -1,4 +1,4 @@
-end_user:
+default_user:
   id: 1
   url: http://weyland.zendesk.com/api/v2/users/1.json
   external_id: fbd47ae5-6883-499a-8ec3-e366340c0510
@@ -14,6 +14,6 @@ end_user:
   email: user@utani.com
   phone: '867-5309'
   signature: Not bad for a human.
-  organization: utani
+  organization: default_organization
   suspended: false
   role: end-user

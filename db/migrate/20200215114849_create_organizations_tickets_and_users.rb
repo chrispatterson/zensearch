@@ -13,8 +13,8 @@ class CreateOrganizationsTicketsAndUsers < ActiveRecord::Migration[6.0]
       t.index :id, unique: true
     end
 
-    create_table :tickets, id: false do |t|
-      t.string :id, limit: 36, null: false
+    create_table :tickets do |t|
+      t.string :_id, limit: 36, null: false
       t.string :url
       t.string :external_id, limit: 36, null: false
       t.integer :type, limit: 2, null: false, default: 1

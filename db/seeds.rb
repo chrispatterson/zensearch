@@ -15,14 +15,14 @@ IMPORT_ENTITIES.each do |entity|
   if entity.count == 0
     path = File.join(File.dirname(__FILE__), "./seeds/#{entity.table_name}.json")
 
-    records = JSON.parse(File.read(path)).with_indifferent_access
+    records = JSON.parse(File.read(path))
 
     records.each do |record|
-      tags = record[:tags]
-      domain_names = record[:domain_names]
+      tags = record['tags']
+      domain_names = record['domain_names']
 
-      record[:tags] = names_to_models(Tag, tags) if tags.present?
-      record[:domain_names] = names_to_models(DomainName, domain_names) if domain_names.present?
+      record['tags'] = names_to_models(Tag, tags) if tags.present?
+      record['domain_names'] = names_to_models(DomainName, domain_names) if domain_names.present?
 
       model = entity.new(record)
       model.save!(validate: false)

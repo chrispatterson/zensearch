@@ -1,0 +1,16 @@
+default_ticket:
+  id: 1
+  _id: 6e44e706-c292-44e8-9a9e-18459b698086
+  external_id: ac183ffa-2f57-438a-a0b5-a4ac290d15c4
+  url: 'https://weyland.com'
+  type: :incident
+  subject: 'Test Ticket'
+  description: 'Some cool description'
+  priority: :normal
+  status: :open
+  submitter: default_user
+  assignee: nil
+  organization: default_organization
+  has_incidents: false
+  due_at: nil
+  via: :web
