@@ -6,6 +6,7 @@ class Ticket < ApplicationRecord
   date_attributes [:due_at]
   enum_attributes %i[priority status type via]
   fulltext_attributes %i[id url external_id subject description]
+  join_attributes [:tags]
   other_attributes %i[submitter_id assignee_id organization_id]
 
   include UuidConcern

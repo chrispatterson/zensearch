@@ -6,6 +6,7 @@ class User < ApplicationRecord
   date_attributes [:last_login_at]
   enum_attributes [:role]
   fulltext_attributes %i[url external_id name user_alias email phone signature]
+  join_attributes [:tags]
   other_attributes %i[locale timezone organization_id]
 
   include UuidConcern
