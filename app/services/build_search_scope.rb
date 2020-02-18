@@ -37,16 +37,14 @@ class BuildSearchScope
     end
 
     def scopes_to_search
-      scopes = [
+      [
         boolean_scope,
         date_scope,
         enum_scope,
         join_scope,
         other_scope,
         text_scope
-      ]
-
-      scopes.compact.reduce(:or)
+      ].compact.reduce(:or)
     end
 
     def boolean_scope

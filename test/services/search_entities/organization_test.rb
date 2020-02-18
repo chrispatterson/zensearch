@@ -101,6 +101,6 @@ class OrganizationTest < ActiveSupport::TestCase
     search_params = { domain_names: domain_name }
     search = SearchEntities.call(Organization, search_params)
 
-    assert_includes search.results, domain_org, 'Should find organizations by tag'
+    assert_includes search.results, domain_org, 'Should find organizations by domain'
   end
 end
