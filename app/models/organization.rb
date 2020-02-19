@@ -6,6 +6,7 @@ class Organization < ApplicationRecord
   date_attributes [:created_at]
   fulltext_attributes %i[details external_id name url]
   join_attributes %i[domain_names tags]
+  other_attributes %i[id]
 
   include UuidConcern
   uuid_attributes [:external_id]

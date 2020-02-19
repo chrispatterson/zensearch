@@ -4,12 +4,17 @@
     <title>Zensearch</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name='author' content='Chris Patterson'>
+    <meta name='description' content="I'm Chris Patterson, and I enjoy standards-oriented web development well beyond the point of embarrassment. If you're reading this, you probably do, too. High-five. ✋">
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div id="zensearch" class="text-muted">ZenSearch</div>
+    <div class='container vh-100 py-3'>
+      <%= yield %>
+    </div>
   </body>
 </html>

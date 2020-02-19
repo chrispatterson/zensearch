@@ -27,7 +27,7 @@ class SearchEntities
   private
 
     def process_search_data(search_params)
-      data = search_params.dup
+      data = search_params.dup.with_indifferent_access
       text_search_value = data.delete :text
 
       if text_search_value
