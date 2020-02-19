@@ -7,20 +7,22 @@ class SearchEntitiesTest < ActiveSupport::TestCase
     search_params = { text: 'shazbot' }
 
     org_search = SearchEntities.new(Organization, search_params)
-    expected_org_fields = { url: 'shazbot', external_id: 'shazbot', name: 'shazbot', details: 'shazbot' }
+    expected_org_fields = {
+      details: 'shazbot', external_id: 'shazbot', name: 'shazbot', url: 'shazbot'
+    }.with_indifferent_access
     assert_equal expected_org_fields, org_search.search_data, 'Organization search failed to expand text parameter'
 
     ticket_search = SearchEntities.new(Ticket, search_params)
     expected_ticket_data = {
       id: 'shazbot', url: 'shazbot', external_id: 'shazbot', subject: 'shazbot', description: 'shazbot'
-    }
+    }.with_indifferent_access
     assert_equal expected_ticket_data, ticket_search.search_data, 'Ticket search failed to expand text parameter'
 
     user_search = SearchEntities.new(User, search_params)
     expected_user_data = {
       url: 'shazbot', external_id: 'shazbot', name: 'shazbot', user_alias: 'shazbot',
       email: 'shazbot', phone: 'shazbot', signature: 'shazbot'
-    }
+    }.with_indifferent_access
     assert_equal expected_user_data, user_search.search_data, 'User search failed to expand text parameter'
   end
 
@@ -28,7 +30,7 @@ class SearchEntitiesTest < ActiveSupport::TestCase
     search_params = { _id: 'meat popsicle' }
 
     search = SearchEntities.new(Ticket, search_params)
-    expected_data = { id: 'meat popsicle' }
+    expected_data = { id: 'meat popsicle' }.with_indifferent_access
     assert_equal expected_data, search.search_data, '_id searches should be transformed into id searches'
   end
 

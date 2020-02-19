@@ -1,0 +1,136 @@
+<% if @organizations.present? %>
+  <strong>Organizations</strong>
+  <div class="table-responsive mb-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">_id</th>
+          <th scope="col">url</th>
+          <th scope="col">external_id</th>
+          <th scope="col">name</th>
+          <th scope="col">domain_names</th>
+          <th scope="col">created_at</th>
+          <th scope="col">details</th>
+          <th scope="col">shared_tickets</th>
+          <th scope="col">tags</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @organizations.each do |organization| %>
+          <tr>
+            <th scope="row"><%= organization.id %></th>
+            <td><%= organization.url %></td>
+            <td><%= organization.external_id %></td>
+            <td><%= organization.name %></td>
+            <td><%= organization.domain_names.map(&:name).join(', ') %></td>
+            <td><%= organization.created_at %></td>
+            <td><%= organization.details %></td>
+            <td><%= organization.shared_tickets %></td>
+            <td><%= organization.tags.map(&:name).join(', ') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% if @tickets.present? %>
+  <strong>Tickets</strong>
+  <div class="table-responsive mb-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">_id</th>
+          <th scope="col">url</th>
+          <th scope="col">external_id</th>
+          <th scope="col">created_at</th>
+          <th scope="col">subject</th>
+          <th scope="col">description</th>
+          <th scope="col">priority</th>
+          <th scope="col">status</th>
+          <th scope="col">submitter_id</th>
+          <th scope="col">assignee_id</th>
+          <th scope="col">organization_id</th>
+          <th scope="col">tags</th>
+          <th scope="col">due_at</th>
+          <th scope="col">via</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tickets.each do |ticket| %>
+          <tr>
+            <th scope="row"><%= ticket._id %></th>
+            <td><%= ticket.url %></td>
+            <td><%= ticket.external_id %></td>
+            <td><%= ticket.created_at %></td>
+            <td><%= ticket.subject %></td>
+            <td><%= ticket.description %></td>
+            <td><%= ticket.priority %></td>
+            <td><%= ticket.status %></td>
+            <td><%= ticket.submitter_id %></td>
+            <td><%= ticket.assignee_id %></td>
+            <td><%= ticket.organization_id %></td>
+            <td><%= ticket.tags.map(&:name).join(', ') %></td>
+            <td><%= ticket.due_at %></td>
+            <td><%= ticket.via %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+
+<% if @users.present? %>
+  <strong>Users</strong>
+  <div class="table-responsive mb-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">_id</th>
+          <th scope="col">url</th>
+          <th scope="col">external_id</th>
+          <th scope="col">name</th>
+          <th scope="col">alias</th>
+          <th scope="col">created_at</th>
+          <th scope="col">active</th>
+          <th scope="col">verified</th>
+          <th scope="col">shared</th>
+          <th scope="col">locale</th>
+          <th scope="col">timezone</th>
+          <th scope="col">last_login_at</th>
+          <th scope="col">email</th>
+          <th scope="col">phone</th>
+          <th scope="col">signature</th>
+          <th scope="col">organization_id</th>
+          <th scope="col">tags</th>
+          <th scope="col">role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <th scope="row"><%= user._id %></th>
+            <td><%= user.url %></td>
+            <td><%= user.external_id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.alias %></td>
+            <td><%= user.created_at %></td>
+            <td><%= user.active %></td>
+            <td><%= user.verified %></td>
+            <td><%= user.shared %></td>
+            <td><%= user.locale %></td>
+            <td><%= user.timezone %></td>
+            <td><%= user.last_login_at %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td><%= user.signature %></td>
+            <td><%= user.organization_id %></td>
+            <td><%= user.tags %></td>
+            <td><%= user.role %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

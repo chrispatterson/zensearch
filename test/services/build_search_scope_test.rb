@@ -24,7 +24,7 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
     org_scope = BuildSearchScope.call(Organization, @search_params)
     expected_org_fields = {
       boolean: [], date: [], enum: [],
-      join: %i[tags domain_names], other: [],
+      join: %i[tags domain_names], other: [:id],
       text: %i[url external_id name details]
     }
     assert_equal expected_org_fields, org_scope.search_fields
@@ -134,8 +134,8 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
     expected_sql =
       'SELECT "organizations".* FROM "organizations" WHERE (((("organizations"."details" IS NULL OR '\
       '"organizations"."details" = \'\') OR ("organizations"."external_id" IS NULL OR '\
-      '"organizations"."external_id" = \'\')) OR ("organizations"."name" IS NULL OR "organizations"."name" = \'\')) OR '\
-      '("organizations"."url" IS NULL OR "organizations"."url" = \'\'))'
+      '"organizations"."external_id" = \'\')) OR ("organizations"."name" IS NULL OR "organizations"."name" = \'\')) '\
+      'OR ("organizations"."url" IS NULL OR "organizations"."url" = \'\'))'
 
     assert_equal expected_sql, text_scope.scope.to_sql
   end
