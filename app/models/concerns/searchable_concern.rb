@@ -12,7 +12,6 @@ module SearchableConcern
     other_search_fields
   ].freeze
 
-  # rubocop:disable Metrics/BlockLength
   included do
     def self.boolean_attributes(attributes = [])
       singleton_class.instance_eval do
@@ -73,7 +72,6 @@ module SearchableConcern
       end
     end
   end
-  # rubocop:enable Metrics/BlockLength
 
   class_methods do
     define_method(:searchable_fields) do

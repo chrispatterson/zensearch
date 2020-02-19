@@ -25,12 +25,14 @@ Metrics/AbcSize:
     - db/migrate/**/*
 
 Metrics/BlockLength:
+  Max: 50
   Exclude:
     - config/environments/**/*
     - config/routes.rb
     - db/migrate/**/*
 
 Metrics/ClassLength:
+  Max: 150
   Exclude:
     - db/migrate/**/*
 
