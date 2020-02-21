@@ -139,4 +139,20 @@ class BuildSearchScopeTest < ActiveSupport::TestCase
 
     assert_equal expected_sql, text_scope.scope.to_sql
   end
+
+  test 'escapes_wildcards_in_fulltext_search' do
+    wildcard_search_params = {}
+    Organization.fulltext_search_fields.each do |key|
+      wildcard_search_params[key] = '%'
+    end
+
+    wildcard_scope = BuildSearchScope.call(Organization, wildcard_search_params)
+
+    expected_sql =
+      'SELECT "organizations".* FROM "organizations" WHERE ((("organizations"."details" LIKE \'%\\%%\' OR '\
+      '"organizations"."external_id" LIKE \'%\\%%\') OR "organizations"."name" LIKE \'%\\%%\') '\
+      'OR "organizations"."url" LIKE \'%\\%%\')'
+
+    assert_equal expected_sql, wildcard_scope.scope.to_sql
+  end
 end

@@ -42,7 +42,7 @@ class EntitySearchController < ApplicationController
     end
 
     def permitted_search_params
-      params.permit(:text)
+      params.permit(:text, :format)
     end
 
     def permitted_ticket_params
