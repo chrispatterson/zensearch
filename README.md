@@ -1,13 +1,11 @@
 ```
- ____         ___                  _
-|_  /___ _ _ / __| ___ __ _ _ _ __| |_
- / // -_) ' \\__ \/ -_) _` | '_/ _| ' \
-/___\___|_||_|___/\___\__,_|_| \__|_||_|
+ ____                             _    
+|_  /___ _ _  ___ ___ __ _ _ _ __| |_  
+ / // -_) ' \(_-</ -_) _` | '_/ _| ' \
+/___\___|_||_/__/\___\__,_|_| \__|_||_|
 ```
 
 ## Setup
-
-(Assumes you already have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed.)
 
 1. Install requirements
     - Ruby 2.6.5 (if you're using rvm, you can see available Ruby versions with `rvm list` - run `rvm install 2.6.5` if it's not present)
@@ -16,7 +14,9 @@
 
       [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) will also probably streamline setup 😛
 
-1. `bundle install` to install needed gems. You may be prompted to run `yarn install --check-files` the first time you're doing this. If that's the case, to that, and then run `bundle install`
+1. Check out a copy of the application locally to the directory of your choice.
+
+1. From that directory, `bundle install` to install needed gems. You may be prompted to run `yarn install --check-files` the first time you're doing this. If that's the case, do that, and then run `bundle install`
 
 1. `rake db:migrate` to run all current migrations against your local database
 
@@ -24,12 +24,12 @@
 
 1. `rails s`
 
-1. You should now be able to access your local ZenSearch instance via http://localhost:3000
+1. You should now be able to access your local Zensearch instance via http://localhost:3000
 
 
 ## Basic Usage
 
-The application root (http://localhost:3000/) provides a simple way to run basic text searches against `Organization`, `Ticket`, and `User` objects. Type in your text, choose a format, and you're off to the races.
+The application root (http://localhost:3000/) provides a simple way to run basic text searches against `Organization`, `Ticket`, and `User` objects. Type in your text, choose a format, and you're off to the races. If you're creating URLs manually, you can use file extensions to specify format as well - http://localhost:3000/search.json?text=ent and http://localhost:3000/search?text=ae&format=json will return the same results.
 
 **NB**: not all fields for a given object are searchable this way - the `SearchableConcern` concern sets the various types of search fields up. You can see which fields are defined as 'fulltext' by invoking the `fulltext_attributes` class method in the console on whatever model you're curious about. Models can also define any _other_ types of searchable fields they support.
 
@@ -54,6 +54,6 @@ The list of all searchable attributes for each model can be found by invoking th
 ### A non-exhaustive list of possible future enhancements
 
 * Add support for additional MIME types
-* Enhance error handling - if this was to run in production mode, we'd want to hook it up to Airbrake
+* Enhance error handling - if this was to run in production mode, we'd want to hook it up to Airbrake or some other monitoring tool
 * Set up / configure continuous integration tool
 * Expose advanced search settings through the web UI

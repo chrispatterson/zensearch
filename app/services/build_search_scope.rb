@@ -115,7 +115,7 @@ class BuildSearchScope
     def with_text_scope(fields)
       fields.map do |field, value|
         entity.where(
-          entity.arel_table[field].matches("%#{value}%")
+          entity.arel_table[field].matches("%#{entity.sanitize_sql_like(value)}%")
         )
       end.reduce(:or)
     end
