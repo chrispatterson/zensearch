@@ -72,16 +72,4 @@ module SearchableConcern
       end
     end
   end
-
-  class_methods do
-    define_method(:searchable_fields) do
-      @searchable_fields ||=
-        boolean_search_fields +
-        date_search_fields +
-        enum_search_fields +
-        fulltext_search_fields +
-        join_search_fields +
-        other_search_fields
-    end
-  end
 end
